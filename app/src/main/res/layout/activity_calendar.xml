@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+   <LinearLayout
+       android:id="@+id/linearLayout"
+       android:layout_width="412dp"
+       android:layout_height="60dp"
+       android:gravity="center"
+       android:orientation="horizontal"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.0"
+       app:layout_constraintStart_toStartOf="parent"
+       tools:ignore="VisualLintBounds">
+
+
+      <ImageButton
+          android:id="@+id/calendarButton"
+          android:layout_width="11dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:background="@color/colorPrimario"
+          android:contentDescription="@string/DescriptionCalendarButton"
+          android:scaleType="fitCenter"
+          app:srcCompat="@drawable/calendar" />
+
+      <ImageButton
+          android:id="@+id/homeButton"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:background="@color/colorPrimario"
+          android:contentDescription="@string/DescriptionHomeButton"
+          android:scaleType="fitCenter"
+          app:srcCompat="@drawable/home" />
+
+
+      <ImageButton
+          android:id="@+id/profileButton"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:background="@color/colorPrimario"
+          android:contentDescription="@string/DescriptionProfileButton"
+          android:scaleType="fitCenter"
+          app:srcCompat="@drawable/profile" />
+   </LinearLayout>
+
+   <CalendarView
+       android:id="@+id/calendarView"
+       android:layout_width="match_parent"
+       android:layout_height="320dp"
+       android:layout_alignParentTop="true"
+       android:layout_marginTop="4dp"
+       android:firstDayOfWeek="1"
+       android:maxDate="your_max_date"
+       android:minDate="your_min_date"
+       android:showWeekNumber="false"
+       android:shownWeekCount="6"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.0"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent" />
+
+   <TextView
+       android:id="@+id/text_date_display"
+       android:layout_width="409dp"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/calendarView"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentBottom="true"
+       android:gravity="center"
+       android:hint="Timestamps for selected date will appear here"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

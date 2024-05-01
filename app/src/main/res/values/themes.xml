@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Proyecto_DAM_Gian_Monacelli" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimario</item>
+        <item name="colorPrimaryVariant">@color/colorPrimario</item>
+
+        <item name="colorSecondary">@color/colorSecundario</item>
+        <item name="colorSecondaryVariant">@color/colorSecundario</item>
+    </style>
+    <style name="Theme.Proyecto_DAM_Gian_Monacelli" parent="Base.Theme.Proyecto_DAM_Gian_Monacelli" />
+
+</resources>

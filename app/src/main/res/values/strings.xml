@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">Proyecto_DAM_Gian_Monacelli</string>
+
+    TODO
+    acomodar mayusculas y minusculas
+
+
+    <!--Main Menu Activity -->
+
+    <string name="DescriptionCalendarButton">Accede al calendario.</string>
+    <string name="DescriptionHomeButton">Accede a la página principal.</string>
+    <string name="DescriptionProfileButton">Accede a tu perfil.</string>
+    <string name="ToastShiftOver">Tu turno ha finalizado</string>
+    <string name="ToastBreakOver">El Break ya se ha disfrutado hoy por completo</string>
+    <string name="ContinueTiqInCounter">Continuar</string>
+    <string name="PauseBreak">"Detener break"</string>
+    <string name="TiqInText">TiQ In</string>
+    <string name="TiqStopText">Pausar</string>
+    <string name="TiqBreakText">Break</string>
+
+
+    <!-- Login Activity -->
+
+    <string name="LoginButtonText">Iniciar sesión</string>
+    <string name="loginText">Inicio de sesión</string>
+    <string name="emailEntry">Introduce tu nombre de usuario.</string>
+    <string name="passwordEntry">Introduce tu contraseña.</string>
+    <string name="AllFieldsAreMandatory">Todos los campos son obligatorios.</string>
+    <string name="LoginSuccessful">Has iniciado sesión correctamente.</string>
+    <string name="IncorrectCredentials"> Las credenciales introducidas no son válidas.</string>
+
+    <!-- Signup Activity -->
+
+    <string name="passwordEntry_Signup">Establece una contraseña.</string>
+    <string name="passwordEntry_Confirmation">Confirma tu contraseña.</string>
+    <string name="createAccountButtonText">Crear cuenta.</string>
+    <string name="signupText">Registro</string>
+    <string name="LoginRedirectText">¿Ya eres un usuario? Inicia sesión.</string>
+    <string name="AccountCreatedSuccessfully">Cuenta Creada correctamente.</string>
+    <string name="AccountCreationFailed">Tu cuenta no se ha podido crear correctamente. Por favor, inténtelo de nuevo.</string>
+    <string name="UserAlreadyExists">El usuario ya existe. Por favor, inicie sesión.</string>
+    <string name="PasswordIncorrect">La contraseña no es correcta. Por favor, verifique que la contraseña escrita sea correcta.</string>
+    <string name="SignUpRedirectText">¿Todavía no estás registrado? Crea tu cuenta.</string>
+    <string name="title_activity_profile">activity_profile</string>
+
+    <!-- Profile Activity -->
+
+
+    <string name="ProfileText">PERFIL</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+
+</resources>

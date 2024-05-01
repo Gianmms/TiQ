@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorSecundario"
+    tools:context=".LoginActivity" >
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <!--Hijo principal del ScrollView-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="371dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:textSize="30dp"
+                    app:srcCompat="@drawable/tiq_white_svg" />
+
+                <TextView
+                    android:id="@+id/LoginText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/loginText"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/email_login"
+                    android:layout_width="344dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/borders"
+                    android:drawableStart="@drawable/imagen_email"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/emailEntry"
+                    android:padding="8dp"/>
+
+                <EditText
+                    android:layout_width="350dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/password_login"
+                    android:background="@drawable/borders"
+                    android:layout_marginTop="30dp"
+                    android:padding="8dp"
+                    android:inputType="textPassword"
+                    android:hint="@string/passwordEntry_Signup"
+                    android:drawableStart="@drawable/imagen_lock"
+                    android:drawablePadding="8dp"/>
+
+
+                <Button
+                    android:layout_width="300dp"
+                    android:layout_height="70dp"
+                    android:text="@string/LoginButtonText"
+                    android:id="@+id/LoginButton"
+                    android:textSize="18sp"
+                    android:layout_marginTop="30dp"
+                    app:cornerRadius = "30dp"/>
+
+                <TextView
+                    android:id="@+id/SignUpRedirect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/SignUpRedirectText"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
