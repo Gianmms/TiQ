@@ -76,12 +76,12 @@
 
     <TextView
         android:id="@+id/usernameTextView"
-        android:layout_width="243dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimario"
+        android:textSize="30sp"
         android:gravity="center_vertical"
-        android:text="Username"
-        android:autoSizeTextType="uniform"
+        android:hint="@string/StringUsername"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,13 +92,13 @@
 
     <TextView
         android:id="@+id/passwordTextView"
-        android:layout_width="243dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
+        android:textSize="30sp"
         android:background="@color/colorPrimario"
         android:gravity="center_vertical"
-        android:text="Password"
-        android:autoSizeTextType="uniform"
         android:textColor="@color/white"
+        android:hint="@string/StringPassword"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.053"

@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding =ActivityLoginBinding.inflate(getLayoutInflater());
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
 
@@ -45,26 +45,26 @@ public class LoginActivity extends AppCompatActivity {
                 String email = binding.emailLogin.getText().toString();
                 String password = binding.passwordLogin.getText().toString();
 
-                if (email.equals("") || password.equals("") )
+                if (email.equals("") || password.equals(""))
                     Toast.makeText(LoginActivity.this, R.string.AllFieldsAreMandatory, Toast.LENGTH_SHORT).show();
-                        else {
-                            Boolean checkCredentials = dataBaseHelper.checkEmailPassword(email, password);
-                            if (checkCredentials){
-                                Toast.makeText(LoginActivity.this, R.string.LoginSuccessful, Toast.LENGTH_SHORT).show();
+                else {
+                    Boolean checkCredentials = dataBaseHelper.checkEmailPassword(email, password);
+                    if (checkCredentials) {
+                        Toast.makeText(LoginActivity.this, R.string.LoginSuccessful, Toast.LENGTH_SHORT).show();
 
-                                // Almacena el tiempo del login en SharedPreferences
-                                SharedPreferences sharedPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("loginTimestamp", dataBaseHelper.getCurrentTimestamp());
-                                editor.apply();
-                                // Procede a la  MainActivity
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
+                        // Almacena el tiempo del login en SharedPreferences
+                        SharedPreferences sharedPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("loginTimestamp", dataBaseHelper.getCurrentTimestamp());
+                        editor.apply();
+                        // Procede a la  MainActivity
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
 
-                            } else  {
-                                Toast.makeText(LoginActivity.this, R.string.IncorrectCredentials, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, R.string.IncorrectCredentials, Toast.LENGTH_SHORT).show();
 
-                            }
+                    }
                 }
 
             }
@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

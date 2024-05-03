@@ -7,19 +7,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.proyecto_dam_gian_monacelli.databinding.ActivityRegistroBinding;
+import com.example.proyecto_dam_gian_monacelli.databinding.ActivitySignupBinding;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    ActivityRegistroBinding binding;
+    ActivitySignupBinding binding;
     DataBaseHelper dataBaseHelper;
 
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding =ActivityRegistroBinding.inflate(getLayoutInflater());
+        binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         dataBaseHelper = new DataBaseHelper(this);
@@ -28,20 +27,20 @@ public class SignUpActivity extends AppCompatActivity {
         binding.createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email =binding.emailRegister.getText().toString();
-                String password =binding.passwordRegister.getText().toString();
-                String confirmPassword =binding.confirmPassword.getText().toString();
+                String email = binding.emailRegister.getText().toString();
+                String password = binding.passwordRegister.getText().toString();
+                String confirmPassword = binding.confirmPassword.getText().toString();
 
                 if (email.equals("") || password.equals("") || confirmPassword.equals(""))
                     Toast.makeText(SignUpActivity.this, R.string.AllFieldsAreMandatory, Toast.LENGTH_SHORT).show();
-                else  {
-                    if (password.equals(confirmPassword)){
-                        Boolean checkUserEmail = dataBaseHelper.checkEmail(email);
+                else {
+                    if (password.equals(confirmPassword)) {
+                        Boolean checkUserEmail = dataBaseHelper.checkUsername(email);
 
-                        if (!checkUserEmail){
+                        if (!checkUserEmail) {
                             Boolean insert = dataBaseHelper.insertData(email, password);
 
-                            if (insert){
+                            if (insert) {
                                 Toast.makeText(SignUpActivity.this, R.string.AccountCreatedSuccessfully, Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -51,17 +50,17 @@ public class SignUpActivity extends AppCompatActivity {
                                 Toast.makeText(SignUpActivity.this, R.string.AccountCreationFailed, Toast.LENGTH_SHORT).show();
                             }
 
-                            } else {
-                                Toast.makeText(SignUpActivity.this, R.string.UserAlreadyExists, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, R.string.UserAlreadyExists, Toast.LENGTH_SHORT).show();
 
-                            }
-                        } else  {
+                        }
+                    } else {
                         Toast.makeText(SignUpActivity.this, R.string.PasswordIncorrect, Toast.LENGTH_SHORT).show();
 
                     }
 
-                    }
                 }
+            }
 
 
         });
@@ -75,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
 
-          }
+    }
 
 
-  }
+}

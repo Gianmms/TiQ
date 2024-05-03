@@ -5,22 +5,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    public static final String SIGNUP_DATABASE_NAME ="Signup.db";
+    public static final String SIGNUP_DATABASE_NAME = "Signup.db";
     public static final String TIME_STAMPS_TABLE_NAME = "timestamps";
 
     public DataBaseHelper(@Nullable Context context) {
-        super(context, SIGNUP_DATABASE_NAME , null, 1);
+        super(context, SIGNUP_DATABASE_NAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase MyDataBase) {
-        MyDataBase.execSQL("Create Table allusers(email Text primary key, password TEXT)");
-        MyDataBase.execSQL("Create Table " + TIME_STAMPS_TABLE_NAME + "(email Text, time_in TEXT, time_out TEXT)");
+        MyDataBase.execSQL("Create Table allusers(username Text primary key, password TEXT)");
+        MyDataBase.execSQL("Create Table " + TIME_STAMPS_TABLE_NAME + "(username Text, tiq_in_start TEXT, tiq_break TEXT)");
     }
 
     @Override
@@ -28,104 +29,118 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         MyDataBase.execSQL("drop Table if exists allusers");
     }
 
-    public Boolean insertData (String email, String password){
+    public Boolean insertData(String username, String password) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("email", email);
+        contentValues.put("username", username);
         contentValues.put("password", password);
-        long result =MyDataBase.insert("allusers", null, contentValues );
-                if(result == -1) {
-                    return false;
-                }else {
-                    return true;
+        long result = MyDataBase.insert("allusers", null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
 
-                }
+        }
 
     }
 
-    public Boolean checkEmail (String email){
+    public Boolean checkUsername(String username) {
 
-        SQLiteDatabase MyDataBase  = this.getWritableDatabase();
-        Cursor cursor = MyDataBase.rawQuery("Select * from allusers where email = ?", new String[]{email});
+        SQLiteDatabase MyDataBase = this.getWritableDatabase();
+        Cursor cursor = MyDataBase.rawQuery("Select * from allusers where username = ?", new String[]{username});
 
         if (cursor.getCount() > 0) {
             return true;
 
 
-        }else {
+        } else {
             return false;
 
         }
     }
 
-public Boolean checkEmailPassword(String email, String password){
-    SQLiteDatabase MyDataBase  = this.getWritableDatabase();
-    Cursor cursor = MyDataBase.rawQuery("Select * from allusers where email = ? and password = ? ", new String[]{email, password});
+    public Boolean checkEmailPassword(String username, String password) {
+        SQLiteDatabase MyDataBase = this.getWritableDatabase();
+        Cursor cursor = MyDataBase.rawQuery("Select * from allusers where username = ? and password = ? ", new String[]{username, password});
 
-    if (cursor.getCount() > 0) {
-        return true;
+        if (cursor.getCount() > 0) {
+            return true;
 
 
-    }else {
-        return false;
+        } else {
+            return false;
+
+        }
 
     }
 
-}
-
-    public Boolean stampTimeIn(String email, String timeIn){
+    public Boolean stampTiqInStart(String username, String timestamp) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("email", email);
-        contentValues.put("time_in", timeIn);
+        contentValues.put("username", username);
+        contentValues.put("tiq_in_start", timestamp);
         long result = MyDataBase.insert(TIME_STAMPS_TABLE_NAME, null, contentValues);
         return result != -1;
     }
 
-    public Boolean stampTimeOut(String email, String timeOut){
+    public Boolean stampTiqBreak(String username, String timestamp) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("time_out", timeOut);
-        int result = MyDataBase.update(TIME_STAMPS_TABLE_NAME, contentValues, "email = ?", new String[]{email});
+        contentValues.put("tiq_break", timestamp);
+        int result = MyDataBase.update(TIME_STAMPS_TABLE_NAME, contentValues, "username = ?", new String[]{username});
         return result > 0;
     }
+
 
     public String getCurrentTimestamp() { //obtiene el tiempo actual.
         return String.valueOf(System.currentTimeMillis());
     }
 
 
-
-
     // Method to retrieve the password for a given username
-    public  String getPasswordForUsername(String username) {
-        SQLiteDatabase MyDataBase = this.getReadableDatabase();
-        String[] columns = {"password"};
-        String selection = "email=?";
-        String[] selectionArgs = {username};
-        Cursor cursor = MyDataBase.query("allusers", columns, selection, selectionArgs, null, null, null);
-        String password = "";
-        if (cursor.moveToFirst()) {
-            password = cursor.getString(0); // Assuming password is stored in the first column
+    public String getPasswordForUsername(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String password = null;
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT password FROM allusers WHERE username = ?", new String[]{username});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                password = cursor.getString(0);
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (Exception e) {
+            // Log any exceptions that occur
+            Log.e("DataBaseHelper", "Error retrieving password for username: " + e.getMessage());
         }
-        cursor.close();
+
         return password;
     }
 
     // Method to retrieve the username for a given password
-    public  String getUsernameForPassword(String password) {
-        SQLiteDatabase MyDataBase = this.getReadableDatabase();
-        String[] columns = {"email"};
-        String selection = "password=?";
-        String[] selectionArgs = {password};
-        Cursor cursor = MyDataBase.query("allusers", columns, selection, selectionArgs, null, null, null);
-        String username = "";
-        if (cursor.moveToFirst()) {
-            username = cursor.getString(0); // Assuming username is stored in the first column
+    public String getUsernameForPassword(String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String username = null;
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT username FROM allusers WHERE password = ?", new String[]{password});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                username = cursor.getString(0);
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (Exception e) {
+            // Log any exceptions that occur
+            Log.e("DataBaseHelper", "Error retrieving username for password: " + e.getMessage());
         }
-        cursor.close();
+
         return username;
     }
-
 
 }

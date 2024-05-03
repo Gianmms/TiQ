@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">Proyecto_DAM_Gian_Monacelli</string>
 
-    TODO
-    acomodar mayusculas y minusculas
 
 
     <!--Main Menu Activity -->
@@ -12,7 +10,8 @@
     <string name="DescriptionProfileButton">Accede a tu perfil.</string>
     <string name="ToastShiftOver">Tu turno ha finalizado</string>
     <string name="ToastBreakOver">El Break ya se ha disfrutado hoy por completo</string>
-    <string name="ContinueTiqInCounter">Continuar</string>
+   <string name="ToastContadorActivo">¡Oops! No puedes salir del contador cuando está activo. </string>
+    <string name="ContinueTiqInCounter">Seguir</string>
     <string name="PauseBreak">"Detener break"</string>
     <string name="TiqInText">TiQ In</string>
     <string name="TiqStopText">Pausar</string>
@@ -33,13 +32,15 @@
 
     <string name="passwordEntry_Signup">Establece una contraseña.</string>
     <string name="passwordEntry_Confirmation">Confirma tu contraseña.</string>
-    <string name="createAccountButtonText">Crear cuenta.</string>
+    <string name="createAccountButtonText">Crear cuenta</string>
     <string name="signupText">Registro</string>
     <string name="LoginRedirectText">¿Ya eres un usuario? Inicia sesión.</string>
     <string name="AccountCreatedSuccessfully">Cuenta Creada correctamente.</string>
-    <string name="AccountCreationFailed">Tu cuenta no se ha podido crear correctamente. Por favor, inténtelo de nuevo.</string>
+    <string name="StringUsername">Usuario</string>
+    <string name="StringPassword">Contraseña</string>
+    <string name="AccountCreationFailed">La cuenta no se ha podido crear correctamente, inténtelo de nuevo.</string>
     <string name="UserAlreadyExists">El usuario ya existe. Por favor, inicie sesión.</string>
-    <string name="PasswordIncorrect">La contraseña no es correcta. Por favor, verifique que la contraseña escrita sea correcta.</string>
+    <string name="PasswordIncorrect">La contraseña no es correcta. Por favor, verifique la contraseña.</string>
     <string name="SignUpRedirectText">¿Todavía no estás registrado? Crea tu cuenta.</string>
     <string name="title_activity_profile">activity_profile</string>
 

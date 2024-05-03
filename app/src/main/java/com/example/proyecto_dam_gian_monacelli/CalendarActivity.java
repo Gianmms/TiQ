@@ -21,19 +21,18 @@ import java.util.Locale;
 
 
 public class CalendarActivity extends AppCompatActivity {
-        CalendarView calendarView;
-        Calendar calendar;
+    CalendarView calendarView;
+    Calendar calendar;
 
     private TextView dateTimeDisplay;
 
 
     @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_calendar);
-            calendarView = findViewById(R.id.calendarView);
-            dateTimeDisplay = (TextView)findViewById(R.id.text_date_display);
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_calendar);
+        calendarView = findViewById(R.id.calendarView);
+        dateTimeDisplay = (TextView) findViewById(R.id.text_date_display);
 
 
         ImageButton homeButton = findViewById(R.id.homeButton);
@@ -65,45 +64,38 @@ public class CalendarActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-            calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
 
         setDate(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
 
-            getDate();
+        getDate();
 
-            calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                @Override
-                public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                }
-            });
+            }
+        });
 
-        }
+    }
 
-    public void setDate(int day, int month, int year){
+    public void setDate(int day, int month, int year) {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, day);
-        long milli =calendar.getTimeInMillis();
+        long milli = calendar.getTimeInMillis();
         calendarView.setDate(milli);
 
     }
 
-    public void getDate(){
+    public void getDate() {
 
         long date = calendarView.getDate();
-        SimpleDateFormat simpleDateFormat =new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
         calendar.setTimeInMillis(date);
-        String selected_date =simpleDateFormat.format(calendar.getTime());
+        String selected_date = simpleDateFormat.format(calendar.getTime());
         Toast.makeText(this, selected_date, Toast.LENGTH_SHORT).show();
     }
-
-
-
 
 
     public void onTiqBreakClick(View view) {
@@ -113,7 +105,6 @@ public class CalendarActivity extends AppCompatActivity {
         // Save the current timestamp in the SQLite database using the DataBaseHelper class
         saveBreakActivationTime(this, currentTime);
     }
-
 
 
     // Method to save the break activation time

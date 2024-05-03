@@ -1,5 +1,6 @@
 package com.example.proyecto_dam_gian_monacelli;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Date;
 import java.util.Locale;
 
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isTimerRunning = false; //Flag to track the state of the main timer
     boolean isBreakTimerRunning = false; // Flag to track the state of the break timer
     long timeCounter = 0; // for time in milliseconds
-    long breakTimeCounter = 0 ;
+    long breakTimeCounter = 0;
 
 
     @Override
@@ -36,32 +38,38 @@ public class MainActivity extends AppCompatActivity {
         ImageButton calendarButton = findViewById(R.id.calendarButton);
         ImageButton profileButton = findViewById(R.id.profileButton);
 
+        Context context;
+
 
         //Abre CalendarActivity
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_calendar);
-                // Crea un Intent para abrir CalendarActivity
-                Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
-                startActivity(intent);
-
+                if (isTimerRunning || isBreakTimerRunning) {
+                    // Arroja un mensaje si el contador está activo, y se quiere cambiar de Activity.
+                    Toast.makeText(MainActivity.this, R.string.ToastContadorActivo, Toast.LENGTH_SHORT).show();
+                } else {
+                    // Crea un Intent para abrir CalendarActivity
+                    Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
-        //Abre ProfileActivity
+//Abre ProfileActivity
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Crea un Intent para abrir ProfileActivity
-                setContentView(R.layout.activity_profile);
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-
+                if (isTimerRunning || isBreakTimerRunning) {
+                    // Arroja un mensaje si el contador está activo, y se quiere cambiar de Activity.
+                    Toast.makeText(MainActivity.this, R.string.ToastContadorActivo, Toast.LENGTH_SHORT).show();
+                } else {
+                    // Crea un Intent para abrir ProfileActivity
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    startActivity(intent);
+                }
             }
         });
-
-
 
 
         //Inicia el contador principal
@@ -73,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     Tiq_In_Start.setVisibility(View.GONE);
                     Tiq_Stop.setVisibility(View.VISIBLE);
                     Tiq_Break.setVisibility(View.VISIBLE);
+                    Tiq_Break_Time.setVisibility(View.VISIBLE);
 
                     CalendarActivity.saveCounterActivationTime(MainActivity.this, new Date(), System.currentTimeMillis());
 
@@ -100,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     Tiq_In_Start.setText(R.string.ContinueTiqInCounter);
                     Tiq_Stop.setVisibility(View.GONE);
                     Tiq_Break.setVisibility(View.GONE);
+                    Tiq_Break_Time.setVisibility(View.GONE);
                     stopTimer();
 
                 }
@@ -107,13 +117,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         Tiq_Break.setOnClickListener(new View.OnClickListener() {
-            boolean breakTimerRunning = false; // Flag to track the state of the break timer
+
 
             @Override
             public void onClick(View v) {
-                if (!breakTimerRunning) {
+                if (!isBreakTimerRunning) {
                     if (breakTimeCounter <= 0) {
                         startBreakTimer(30 * 60 * 1000); // Replace durationInMillisForBreak with the actual duration
                     } else {
@@ -121,24 +130,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                     stopTimer();
                     Tiq_Break.setText(R.string.PauseBreak);
-                    breakTimerRunning = true;
+                    isBreakTimerRunning = true;
                 } else {
                     pauseBreakTimer(); // Pause the Tiq_Break_Time countdown
                     startTimer(timeCounter); // Resume the Tiq_In_Time countdown
                     Tiq_Break.setText(R.string.TiqBreakText);
-                    breakTimerRunning = false;
+                    isBreakTimerRunning = false;
                 }
             }
         });
 
 
-
-
     }//FINAL DEL METODO ON CREATE
 
 
-
-
+    //Inicia el contador principal
     private void startTimer(long durationInMillis) {
         countDownTimer = new CountDownTimer(durationInMillis, 1000) { // Countdown timer for the specified duration
             @Override
@@ -156,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         countDownTimer.start();
     }
 
-
+    //Detiene el contador principal
     private void stopTimer() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
@@ -172,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
         String timeString = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
         Tiq_In_Time.setText(timeString);
     }
-
-
 
 
     private void startBreakTimer(long durationInMillis) {
@@ -210,13 +214,13 @@ public class MainActivity extends AppCompatActivity {
             // Additional logic to handle the paused state if needed
         }
     }
+
     // Method to update the UI with the remaining time for the break countdown timer
     private void updateBreakTimerDisplay() {
 
 
-
         long minutes = (breakTimeCounter / 60000) % 60;
-        long seconds = (breakTimeCounter  / 1000) % 60;
+        long seconds = (breakTimeCounter / 1000) % 60;
         String timeString = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
         Tiq_Break_Time.setText(timeString); // Update the UI with the remaining time
     }
