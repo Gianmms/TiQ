@@ -98,32 +98,13 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
 
-    public void onTiqBreakClick(View view) {
-        // Get the current timestamp
-        long currentTime = Long.parseLong(getCurrentTimestamp());
-
-        // Save the current timestamp in the SQLite database using the DataBaseHelper class
-        saveBreakActivationTime(this, currentTime);
-    }
-
-
-    // Method to save the break activation time
-    public static void saveBreakActivationTime(Context context, long activationTime) {
-        // Get instance of the database helper
-        DataBaseHelper dbHelper = new DataBaseHelper(context);
-
-        // Get writable database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // Create ContentValues to insert data
-        ContentValues values = new ContentValues();
-
-        // Add data to ContentValues
-        values.put("time_out", activationTime);
-
-        // Insert row in timestamps table
-        db.insert(DataBaseHelper.TIME_STAMPS_TABLE_NAME, null, values);
-    }
+//    public void onTiqBreakClick(View view) {
+//        // Get the current timestamp
+//        long currentTime = Long.parseLong(getCurrentTimestamp());
+//
+//        // Save the current timestamp in the SQLite database using the DataBaseHelper class
+//        saveBreakActivationTime(this, currentTime);
+//    }
 
     // Method to get the current timestamp
     public String getCurrentTimestamp() {
@@ -131,26 +112,49 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
 
-    // Method to save the counter activation time and date
-    public static void saveCounterActivationTime(Context context, Date selectedDate, long activationTime) {
 
-        // Get instance of the database helper
-        DataBaseHelper dbHelper = new DataBaseHelper(context);
 
-        // Get writable database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // Create ContentValues to insert data
-        ContentValues values = new ContentValues();
-
-        // Add data to ContentValues
-        values.put("date", selectedDate.toString());
-        values.put("time", String.valueOf(activationTime));
-
-        // Insert row in timestamps table
-        db.insert(DataBaseHelper.TIME_STAMPS_TABLE_NAME, null, values);
-
-    }
+//    // Method to save the break activation time
+//    public static void saveBreakActivationTime(Context context, long activationTime) {
+//        // Get instance of the database helper
+//        DataBaseHelper dbHelper = new DataBaseHelper(context);
+//
+//        // Get writable database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // Create ContentValues to insert data
+//        ContentValues values = new ContentValues();
+//
+//        // Add data to ContentValues
+//        values.put("time_out", activationTime);
+//
+//        // Insert row in timestamps table
+//        db.insert(DataBaseHelper.TIME_STAMPS_TABLE_NAME, null, values);
+//    }
+//
+//
+//
+//
+//    // Method to save the counter activation time and date
+//    public static void saveCounterActivationTime(Context context, Date selectedDate, long activationTime) {
+//
+//        // Get instance of the database helper
+//        DataBaseHelper dbHelper = new DataBaseHelper(context);
+//
+//        // Get writable database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // Create ContentValues to insert data
+//        ContentValues values = new ContentValues();
+//
+//        // Add data to ContentValues
+//        values.put("date", selectedDate.toString());
+//        values.put("time", String.valueOf(activationTime));
+//
+//        // Insert row in timestamps table
+//        db.insert(DataBaseHelper.TIME_STAMPS_TABLE_NAME, null, values);
+//
+//    }
 
 
 }

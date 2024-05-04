@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isBreakTimerRunning = false; // Flag to track the state of the break timer
     long timeCounter = 0; // for time in milliseconds
     long breakTimeCounter = 0;
+    DataBaseHelper dataBaseHelper;
 
 
     @Override
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         Tiq_Break = findViewById(R.id.Tiq_Break);
         ImageButton calendarButton = findViewById(R.id.calendarButton);
         ImageButton profileButton = findViewById(R.id.profileButton);
+        dataBaseHelper = new DataBaseHelper(this);
+
 
         Context context;
 
@@ -83,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
                     Tiq_Break.setVisibility(View.VISIBLE);
                     Tiq_Break_Time.setVisibility(View.VISIBLE);
 
-                    CalendarActivity.saveCounterActivationTime(MainActivity.this, new Date(), System.currentTimeMillis());
+
+
+//                    CalendarActivity.saveCounterActivationTime(MainActivity.this, new Date(), System.currentTimeMillis());
+
+
+
 
                     // Iniciar el temporizador  si no está en marcha
                     if (timeCounter == 0) {
@@ -151,12 +159,23 @@ public class MainActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 timeCounter = millisUntilFinished;
                 updateTimerDisplay();// Actualiza el contador con el tiempo restante
+
+
+                // Retrieve the username and timestamp
+                String usernameRetrieved = dataBaseHelper.getUsername();
+                String timestamp = String.valueOf(System.currentTimeMillis());
+
+                // guarda un stamp del tiempo de inicio
+                dataBaseHelper.stampTiqInStart(usernameRetrieved, timestamp);
+
             }
 
             @Override
             public void onFinish() {
 
                 Toast.makeText(MainActivity.this, R.string.ToastShiftOver, Toast.LENGTH_SHORT).show();
+
+
             }
         };
         countDownTimer.start();

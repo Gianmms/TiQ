@@ -74,11 +74,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public String getUsername() {
+        SQLiteDatabase MyDataBase = this.getWritableDatabase();
+        Cursor cursor = MyDataBase.rawQuery("Select username from allusers", null);
+        if (cursor.moveToFirst()) {
+            return cursor.getString(0);
+        } else {
+            return null;
+        }
+    }
+
     public Boolean stampTiqInStart(String username, String timestamp) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("username", username);
-        contentValues.put("tiq_in_start", timestamp);
+        contentValues.put("time_in", timestamp);
         long result = MyDataBase.insert(TIME_STAMPS_TABLE_NAME, null, contentValues);
         return result != -1;
     }
@@ -86,7 +97,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Boolean stampTiqBreak(String username, String timestamp) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("tiq_break", timestamp);
+        contentValues.put("time_out", timestamp);
         int result = MyDataBase.update(TIME_STAMPS_TABLE_NAME, contentValues, "username = ?", new String[]{username});
         return result > 0;
     }
@@ -95,6 +106,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public String getCurrentTimestamp() { //obtiene el tiempo actual.
         return String.valueOf(System.currentTimeMillis());
     }
+
+
+
 
 
     // Method to retrieve the password for a given username
