@@ -48,7 +48,8 @@
 
 
     <string name="ProfileText">PERFIL</string>
-
+    <string name="ShowCredentialsButtonText">Mostrar credenciales.</string>
+ <string name="HideCredentialsButtonText">Ocultar credenciales.</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

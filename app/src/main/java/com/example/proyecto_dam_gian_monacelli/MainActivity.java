@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -86,25 +87,26 @@ public class MainActivity extends AppCompatActivity {
                     Tiq_Break.setVisibility(View.VISIBLE);
                     Tiq_Break_Time.setVisibility(View.VISIBLE);
 
+                    // Retrieve the username and timestamp
+                    String usernameRetrieved = dataBaseHelper.getUsername();
+                    String timestamp = String.valueOf(System.currentTimeMillis());
 
+                    // Get the current date
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String currentDate = sdf.format(new Date());
 
-//                    CalendarActivity.saveCounterActivationTime(MainActivity.this, new Date(), System.currentTimeMillis());
-
-
-
+                    // guarda un stamp del tiempo de inicio
+                    dataBaseHelper.stampTiqInStart(usernameRetrieved, timestamp, currentDate);  // Pass the date
 
                     // Iniciar el temporizador  si no está en marcha
                     if (timeCounter == 0) {
                         startTimer(8 * 60 * 60 * 1000); // Iniciar el temporizador con una duración fija de 8 horas
                     } else {
-
                         startTimer(timeCounter); // Continúa el temporizador con el tiempo restante
                     }
-
                 }
+                dataBaseHelper.close();
             }
-
-
         });
 
         //Detiene el contador
@@ -120,11 +122,21 @@ public class MainActivity extends AppCompatActivity {
                     Tiq_Break_Time.setVisibility(View.GONE);
                     stopTimer();
 
+
+                    // Retrieve the username and timestamp
+                    String usernameRetrieved = dataBaseHelper.getUsername();
+                    String timestamp = String.valueOf(System.currentTimeMillis());
+
+                    // guarda un stamp del tiempo de inicio
+                    dataBaseHelper.stampTiqBreak(usernameRetrieved, timestamp);
+                    dataBaseHelper.close();
+
                 }
             }
         });
 
 
+        //Boton que inicia y detiene el contador de Break
         Tiq_Break.setOnClickListener(new View.OnClickListener() {
 
 
@@ -161,12 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 updateTimerDisplay();// Actualiza el contador con el tiempo restante
 
 
-                // Retrieve the username and timestamp
-                String usernameRetrieved = dataBaseHelper.getUsername();
-                String timestamp = String.valueOf(System.currentTimeMillis());
 
-                // guarda un stamp del tiempo de inicio
-                dataBaseHelper.stampTiqInStart(usernameRetrieved, timestamp);
 
             }
 

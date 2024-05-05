@@ -48,14 +48,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (email.equals("") || password.equals(""))
                     Toast.makeText(LoginActivity.this, R.string.AllFieldsAreMandatory, Toast.LENGTH_SHORT).show();
                 else {
-                    Boolean checkCredentials = dataBaseHelper.checkEmailPassword(email, password);
+                    Boolean checkCredentials = dataBaseHelper.checkPassword(email, password);
                     if (checkCredentials) {
                         Toast.makeText(LoginActivity.this, R.string.LoginSuccessful, Toast.LENGTH_SHORT).show();
 
                         // Almacena el tiempo del login en SharedPreferences
                         SharedPreferences sharedPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("loginTimestamp", dataBaseHelper.getCurrentTimestamp());
+                        editor.putString("loginTimestamp", dataBaseHelper.getCurrentLoginTimestamp());
                         editor.apply();
                         // Procede a la  MainActivity
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);

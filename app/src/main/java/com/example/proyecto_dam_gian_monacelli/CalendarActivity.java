@@ -3,6 +3,7 @@ package com.example.proyecto_dam_gian_monacelli;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -23,8 +24,8 @@ import java.util.Locale;
 public class CalendarActivity extends AppCompatActivity {
     CalendarView calendarView;
     Calendar calendar;
-
     private TextView dateTimeDisplay;
+    private DataBaseHelper dbHelper;  // Database helper instance
 
 
     @Override
@@ -32,8 +33,8 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         calendarView = findViewById(R.id.calendarView);
-        dateTimeDisplay = (TextView) findViewById(R.id.text_date_display);
-
+        dateTimeDisplay = (TextView) findViewById(R.id.timestamp_display);
+        dbHelper = new DataBaseHelper(this);
 
         ImageButton homeButton = findViewById(R.id.homeButton);
         ImageButton profileButton = findViewById(R.id.profileButton);
@@ -65,96 +66,30 @@ public class CalendarActivity extends AppCompatActivity {
 
 
         calendar = Calendar.getInstance();
-
         setDate(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
 
-        getDate();
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-
-            }
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            String selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+            String timestamp = dbHelper.getTimestampForDate(selectedDate);
+            //dateTimeDisplay.setText(timestamp);
+            dateTimeDisplay.setText(timestamp);
         });
+
+
+
 
     }
 
+
+    //Asigna la fecha al CalendarView
     public void setDate(int day, int month, int year) {
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         long milli = calendar.getTimeInMillis();
         calendarView.setDate(milli);
-
     }
-
-    public void getDate() {
-
-        long date = calendarView.getDate();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
-        calendar.setTimeInMillis(date);
-        String selected_date = simpleDateFormat.format(calendar.getTime());
-        Toast.makeText(this, selected_date, Toast.LENGTH_SHORT).show();
-    }
-
-
-//    public void onTiqBreakClick(View view) {
-//        // Get the current timestamp
-//        long currentTime = Long.parseLong(getCurrentTimestamp());
-//
-//        // Save the current timestamp in the SQLite database using the DataBaseHelper class
-//        saveBreakActivationTime(this, currentTime);
-//    }
-
-    // Method to get the current timestamp
-    public String getCurrentTimestamp() {
-        return String.valueOf(System.currentTimeMillis());
-    }
-
-
-
-
-//    // Method to save the break activation time
-//    public static void saveBreakActivationTime(Context context, long activationTime) {
-//        // Get instance of the database helper
-//        DataBaseHelper dbHelper = new DataBaseHelper(context);
-//
-//        // Get writable database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // Create ContentValues to insert data
-//        ContentValues values = new ContentValues();
-//
-//        // Add data to ContentValues
-//        values.put("time_out", activationTime);
-//
-//        // Insert row in timestamps table
-//        db.insert(DataBaseHelper.TIME_STAMPS_TABLE_NAME, null, values);
-//    }
-//
-//
-//
-//
-//    // Method to save the counter activation time and date
-//    public static void saveCounterActivationTime(Context context, Date selectedDate, long activationTime) {
-//
-//        // Get instance of the database helper
-//        DataBaseHelper dbHelper = new DataBaseHelper(context);
-//
-//        // Get writable database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // Create ContentValues to insert data
-//        ContentValues values = new ContentValues();
-//
-//        // Add data to ContentValues
-//        values.put("date", selectedDate.toString());
-//        values.put("time", String.valueOf(activationTime));
-//
-//        // Insert row in timestamps table
-//        db.insert(DataBaseHelper.TIME_STAMPS_TABLE_NAME, null, values);
-//
-//    }
 
 
 }

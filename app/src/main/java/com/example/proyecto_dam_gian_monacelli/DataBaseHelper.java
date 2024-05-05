@@ -9,24 +9,40 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     public static final String SIGNUP_DATABASE_NAME = "Signup.db";
     public static final String TIME_STAMPS_TABLE_NAME = "timestamps";
+    private static final String COLUMN_DATE = "date";
+    public static final int DATABASE_VERSION = 5;
 
     public DataBaseHelper(@Nullable Context context) {
-        super(context, SIGNUP_DATABASE_NAME, null, 1);
+        super(context, SIGNUP_DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase MyDataBase) {
         MyDataBase.execSQL("Create Table allusers(username Text primary key, password TEXT)");
-        MyDataBase.execSQL("Create Table " + TIME_STAMPS_TABLE_NAME + "(username Text, tiq_in_start TEXT, tiq_break TEXT)");
+        MyDataBase.execSQL("Create Table " + TIME_STAMPS_TABLE_NAME + "(username Text, tiq_in_start TEXT, tiq_break TEXT, " + COLUMN_DATE + " DATE)");
     }
 
+
     @Override
-    public void onUpgrade(SQLiteDatabase MyDataBase, int i, int i1) {
-        MyDataBase.execSQL("drop Table if exists allusers");
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 6) {
+            // Drop the existing allusers table
+            db.execSQL("DROP TABLE IF EXISTS allusers");
+
+            // Create the allusers table with the modified schema
+            db.execSQL("CREATE TABLE allusers (username TEXT PRIMARY KEY, tiq_in_start TEXT, tiq_break TEXT)");
+
+            // Increment the version to the latest
+            db.setVersion(6);
+        }
     }
 
     public Boolean insertData(String username, String password) {
@@ -59,7 +75,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Boolean checkEmailPassword(String username, String password) {
+    public Boolean checkPassword(String username, String password) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         Cursor cursor = MyDataBase.rawQuery("Select * from allusers where username = ? and password = ? ", new String[]{username, password});
 
@@ -74,6 +90,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    //Obtiene el nombre de usuario
 
     public String getUsername() {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
@@ -85,11 +102,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Boolean stampTiqInStart(String username, String timestamp) {
+    //Obtiene la contraseña
+    public String getPassword() {
+
+        SQLiteDatabase MyDataBase = this.getWritableDatabase();
+        Cursor cursor = MyDataBase.rawQuery("Select password from allusers", null);
+        if (cursor.moveToFirst()) {
+            return cursor.getString(0);
+        } else {
+            return null;
+        }
+    }
+
+    public Boolean stampTiqInStart(String username, String timestamp, String date) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("username", username);
-        contentValues.put("time_in", timestamp);
+        contentValues.put("tiq_in_start", timestamp);
+        contentValues.put(COLUMN_DATE, date);  // Guarda la fecha
         long result = MyDataBase.insert(TIME_STAMPS_TABLE_NAME, null, contentValues);
         return result != -1;
     }
@@ -97,64 +127,69 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Boolean stampTiqBreak(String username, String timestamp) {
         SQLiteDatabase MyDataBase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("time_out", timestamp);
+        contentValues.put("tiq_break", timestamp);
         int result = MyDataBase.update(TIME_STAMPS_TABLE_NAME, contentValues, "username = ?", new String[]{username});
         return result > 0;
     }
 
 
-    public String getCurrentTimestamp() { //obtiene el tiempo actual.
+    public String getCurrentLoginTimestamp() { //obtiene el tiempo actual.
         return String.valueOf(System.currentTimeMillis());
     }
 
 
+    //Metodo para obtener el timestamp de un día especifico  para la vista en calendario.
+//    public String getTimestampForDate(String selectedDate) {
+//        SQLiteDatabase MyDataBase = this.getReadableDatabase();
+//        String[] columns = {"tiq_in_start", "tiq_break"};
+//        String selection = COLUMN_DATE + " = ?";
+//        String[] selectionArgs = {selectedDate};
+//        Cursor cursor = MyDataBase.query(TIME_STAMPS_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+//        if (cursor.moveToFirst()) {
+//            String tiqInStart = cursor.getString(cursor.getColumnIndexOrThrow("tiq_in_start"));
+//            String tiqBreak = cursor.getString(cursor.getColumnIndexOrThrow("tiq_break"));
+//            Log.d("DatabaseHelper", "Fetched data: " + tiqInStart + ", " + tiqBreak);
+//            return "Time In: " + tiqInStart + "\nTime Out: " + tiqBreak;
+//        } else {
+//            Log.d("DatabaseHelper", "No data found for date: " + selectedDate);
+//            return "Timestamps not found for the selected date";
+//        }
+//    }
+    public String getTimestampForDate(String selectedDate) {
+        SQLiteDatabase MyDataBase = this.getReadableDatabase();
+        String[] columns = {"tiq_in_start", "tiq_break"};
+        String selection = COLUMN_DATE + " = ?";
+        String[] selectionArgs = {selectedDate};
 
+        // Logging selectedDate
+        Log.d("DataBaseHelper", "Selected Date: " + selectedDate);
 
+        Cursor cursor = MyDataBase.query(TIME_STAMPS_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        int count = cursor.getCount(); // Get the number of rows returned by the cursor
+        Log.d("DataBaseHelper", "Number of rows returned: " + count);
 
-    // Method to retrieve the password for a given username
-    public String getPasswordForUsername(String username) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String password = null;
+        if (cursor.moveToFirst()) {
+            // Retrieve timestamps from the cursor
+            String tiqInStartMillis = cursor.getString(cursor.getColumnIndexOrThrow("tiq_in_start"));
+            String tiqBreakMillis = cursor.getString(cursor.getColumnIndexOrThrow("tiq_break"));
 
-        try {
-            Cursor cursor = db.rawQuery("SELECT password FROM allusers WHERE username = ?", new String[]{username});
+            // Convert timestamps to human-readable format
+            String tiqInStart = formatTimestamp(Long.parseLong(tiqInStartMillis));
+            String tiqBreak = formatTimestamp(Long.parseLong(tiqBreakMillis));
 
-            if (cursor != null && cursor.moveToFirst()) {
-                password = cursor.getString(0);
-            }
-
-            if (cursor != null) {
-                cursor.close();
-            }
-        } catch (Exception e) {
-            // Log any exceptions that occur
-            Log.e("DataBaseHelper", "Error retrieving password for username: " + e.getMessage());
+            Log.d("DataBaseHelper", "Fetched data: " + tiqInStart + ", " + tiqBreak);
+            return "Time In: " + tiqInStart + "\nTime Out: " + tiqBreak;
+        } else {
+            Log.d("DataBaseHelper", "No data found for date: " + selectedDate);
+            return "Timestamps not found for the selected date";
         }
-
-        return password;
     }
 
-    // Method to retrieve the username for a given password
-    public String getUsernameForPassword(String password) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String username = null;
-
-        try {
-            Cursor cursor = db.rawQuery("SELECT username FROM allusers WHERE password = ?", new String[]{password});
-
-            if (cursor != null && cursor.moveToFirst()) {
-                username = cursor.getString(0);
-            }
-
-            if (cursor != null) {
-                cursor.close();
-            }
-        } catch (Exception e) {
-            // Log any exceptions that occur
-            Log.e("DataBaseHelper", "Error retrieving username for password: " + e.getMessage());
-        }
-
-        return username;
+    // Method to format timestamp from milliseconds to a readable date format
+    private String formatTimestamp(long millis) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return sdf.format(new Date(millis));
     }
+
 
 }

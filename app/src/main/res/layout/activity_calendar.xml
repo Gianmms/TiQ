@@ -68,7 +68,7 @@
        app:layout_constraintTop_toTopOf="parent" />
 
    <TextView
-       android:id="@+id/text_date_display"
+       android:id="@+id/timestamp_display"
        android:layout_width="409dp"
        android:layout_height="wrap_content"
        android:layout_below="@id/calendarView"

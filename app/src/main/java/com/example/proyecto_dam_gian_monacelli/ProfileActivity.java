@@ -7,10 +7,15 @@ import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
+
+
+    DataBaseHelper dataBaseHelper;
+
 
 
     @Override
@@ -21,9 +26,11 @@ public class ProfileActivity extends AppCompatActivity {
         TextView usernameTextView = findViewById(R.id.usernameTextView);
         TextView passwordTextView = findViewById(R.id.passwordTextView);
 
+        Button showCredentialsButton = findViewById(R.id.ShowCredentialsButton);
+
         ImageButton homeButton = findViewById(R.id.homeButton);
         ImageButton calendarButton = findViewById(R.id.calendarButton);
-
+        dataBaseHelper = new DataBaseHelper(this);
 
         //Abre MainActivity(home)
         homeButton.setOnClickListener(new View.OnClickListener() {
@@ -50,45 +57,33 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        String retrievedUsername;
-        String retrievedPassword;
-
-        try (DataBaseHelper dbHelper = new DataBaseHelper(ProfileActivity.this)) {
 
 
-            // Assuming you have an instance of DataBaseHelper named dbHelper
-            String username = ""; // Replace with the actual username
-            String password = ""; // Replace with the actual password
+
+        //METODO PARA OBTENER PASSWORD Y USERNAME
 
 
-            // Retrieve the username and password from the database using the methods in DataBaseHelper
-            retrievedUsername = dbHelper.getUsernameForPassword(password);
-            retrievedPassword = dbHelper.getPasswordForUsername(username);
-
-            Log.d("ProfileActivity", "Retrieved Username: " + retrievedUsername);
-            Log.d("ProfileActivity", "Retrieved Password: " + retrievedPassword);
-        }
-
-        // Set the retrieved username and password in the TextViews
-        usernameTextView.setText(retrievedUsername);
-        passwordTextView.setText(retrievedPassword); // Display asterisks instead of the actual password
-
-        // Add an option to show the password when clicked
-        passwordTextView.setOnClickListener(new View.OnClickListener() {
-            boolean isPasswordVisible = false;
+        showCredentialsButton.setOnClickListener(new View.OnClickListener() {
+            boolean isInformationDisplayed = false;
 
             @Override
             public void onClick(View v) {
-                if (isPasswordVisible) {
-                    // If the password is currently visible, hide it
-                    passwordTextView.setText("Password: ********");
-                    isPasswordVisible = false;
+                if (isInformationDisplayed) {
+                    usernameTextView.setText("");
+                    passwordTextView.setText("");
+                    showCredentialsButton.setText(R.string.ShowCredentialsButtonText);
+                    isInformationDisplayed = false;
                 } else {
-                    // If the password is currently hidden, show it
-                    passwordTextView.setText(retrievedPassword);
-                    isPasswordVisible = true;
+                    String usernameRetrieved = dataBaseHelper.getUsername();
+                    usernameTextView.setText(usernameRetrieved);
+                    String passwordRetrieved = dataBaseHelper.getPassword();
+                    passwordTextView.setText(passwordRetrieved);
+                    showCredentialsButton.setText(R.string.HideCredentialsButtonText);
+                    isInformationDisplayed = true;
                 }
             }
         });
+
+
     }
 }
