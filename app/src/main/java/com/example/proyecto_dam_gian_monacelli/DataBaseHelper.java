@@ -138,30 +138,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //Metodo para obtener el timestamp de un día especifico  para la vista en calendario.
-//    public String getTimestampForDate(String selectedDate) {
-//        SQLiteDatabase MyDataBase = this.getReadableDatabase();
-//        String[] columns = {"tiq_in_start", "tiq_break"};
-//        String selection = COLUMN_DATE + " = ?";
-//        String[] selectionArgs = {selectedDate};
-//        Cursor cursor = MyDataBase.query(TIME_STAMPS_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
-//        if (cursor.moveToFirst()) {
-//            String tiqInStart = cursor.getString(cursor.getColumnIndexOrThrow("tiq_in_start"));
-//            String tiqBreak = cursor.getString(cursor.getColumnIndexOrThrow("tiq_break"));
-//            Log.d("DatabaseHelper", "Fetched data: " + tiqInStart + ", " + tiqBreak);
-//            return "Time In: " + tiqInStart + "\nTime Out: " + tiqBreak;
-//        } else {
-//            Log.d("DatabaseHelper", "No data found for date: " + selectedDate);
-//            return "Timestamps not found for the selected date";
-//        }
-//    }
     public String getTimestampForDate(String selectedDate) {
         SQLiteDatabase MyDataBase = this.getReadableDatabase();
         String[] columns = {"tiq_in_start", "tiq_break"};
         String selection = COLUMN_DATE + " = ?";
         String[] selectionArgs = {selectedDate};
 
-        // Logging selectedDate
+        // Logging de selectedDate
         Log.d("DataBaseHelper", "Selected Date: " + selectedDate);
 
         Cursor cursor = MyDataBase.query(TIME_STAMPS_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
@@ -169,7 +152,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Log.d("DataBaseHelper", "Number of rows returned: " + count);
 
         if (cursor.moveToFirst()) {
-            // Retrieve timestamps from the cursor
+            // Obtiene timestamps del cursor
             String tiqInStartMillis = cursor.getString(cursor.getColumnIndexOrThrow("tiq_in_start"));
             String tiqBreakMillis = cursor.getString(cursor.getColumnIndexOrThrow("tiq_break"));
 
@@ -185,7 +168,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Method to format timestamp from milliseconds to a readable date format
+    // Método para formatear el timestamp de milisegundos a un formato de fecha legible
     private String formatTimestamp(long millis) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return sdf.format(new Date(millis));

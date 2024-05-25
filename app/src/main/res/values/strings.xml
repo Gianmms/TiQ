@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proyecto_DAM_Gian_Monacelli</string>
+ <string name="app_name">TiQ</string>
 
 
 
@@ -44,12 +44,20 @@
     <string name="SignUpRedirectText">¿Todavía no estás registrado? Crea tu cuenta.</string>
     <string name="title_activity_profile">activity_profile</string>
 
+
+
     <!-- Profile Activity -->
 
 
     <string name="ProfileText">PERFIL</string>
     <string name="ShowCredentialsButtonText">Mostrar credenciales.</string>
- <string name="HideCredentialsButtonText">Ocultar credenciales.</string>
+    <string name="HideCredentialsButtonText">Ocultar credenciales.</string>
+
+
+    <!-- Calendar Activity -->
+
+    <string name="CalendarDateDisplay">"Las marcas del día seleccionad aparecerán aquí"</string>
+
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

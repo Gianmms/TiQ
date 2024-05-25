@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
     TextView Tiq_In_Time, Tiq_Break_Time;
     Button Tiq_In_Start, Tiq_Stop, Tiq_Break;
     CountDownTimer countDownTimer, breakCountDownTimer;
-    boolean isTimerRunning = false; //Flag to track the state of the main timer
-    boolean isBreakTimerRunning = false; // Flag to track the state of the break timer
+    boolean isTimerRunning = false; //Flag para seguir el estado del contador  principal
+    boolean isBreakTimerRunning = false; // Flag para seguir el estado del contador de break
     long timeCounter = 0; // for time in milliseconds
     long breakTimeCounter = 0;
     DataBaseHelper dataBaseHelper;
@@ -87,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
                     Tiq_Break.setVisibility(View.VISIBLE);
                     Tiq_Break_Time.setVisibility(View.VISIBLE);
 
-                    // Retrieve the username and timestamp
+                    // Obtiene username y timestamp
                     String usernameRetrieved = dataBaseHelper.getUsername();
                     String timestamp = String.valueOf(System.currentTimeMillis());
 
-                    // Get the current date
+                    // Obtiene fecha actual
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     String currentDate = sdf.format(new Date());
 
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     stopTimer();
 
 
-                    // Retrieve the username and timestamp
+                    // Obtiene username y timestamp
                     String usernameRetrieved = dataBaseHelper.getUsername();
                     String timestamp = String.valueOf(System.currentTimeMillis());
 
@@ -144,16 +144,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!isBreakTimerRunning) {
                     if (breakTimeCounter <= 0) {
-                        startBreakTimer(30 * 60 * 1000); // Replace durationInMillisForBreak with the actual duration
+                        startBreakTimer(30 * 60 * 1000);
                     } else {
-                        startBreakTimer(breakTimeCounter); // Resume from the remaining break time
+                        startBreakTimer(breakTimeCounter);
                     }
                     stopTimer();
                     Tiq_Break.setText(R.string.PauseBreak);
                     isBreakTimerRunning = true;
                 } else {
-                    pauseBreakTimer(); // Pause the Tiq_Break_Time countdown
-                    startTimer(timeCounter); // Resume the Tiq_In_Time countdown
+                    pauseBreakTimer();
+                    startTimer(timeCounter);
                     Tiq_Break.setText(R.string.TiqBreakText);
                     isBreakTimerRunning = false;
                 }
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Inicia el contador principal
     private void startTimer(long durationInMillis) {
-        countDownTimer = new CountDownTimer(durationInMillis, 1000) { // Countdown timer for the specified duration
+        countDownTimer = new CountDownTimer(durationInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeCounter = millisUntilFinished;
@@ -236,19 +236,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void pauseBreakTimer() {
         if (breakCountDownTimer != null) {
-            breakCountDownTimer.cancel(); // Pause the break countdown timer by canceling it
-            // Additional logic to handle the paused state if needed
+            breakCountDownTimer.cancel(); // Pausa el temporizador de cuenta atrás de break
+
         }
     }
 
-    // Method to update the UI with the remaining time for the break countdown timer
+    // Método para actualizar la interfaz de usuario con el tiempo restante de la cuenta atrás de la interrupción
     private void updateBreakTimerDisplay() {
 
 
         long minutes = (breakTimeCounter / 60000) % 60;
         long seconds = (breakTimeCounter / 1000) % 60;
         String timeString = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-        Tiq_Break_Time.setText(timeString); // Update the UI with the remaining time
+        Tiq_Break_Time.setText(timeString);
     }
 
 
